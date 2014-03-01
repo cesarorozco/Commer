@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item 
+        android:id="@+id/ver_pagos" 
+        android:title="@string/menu_pagos">
+        
+    </item>
+    <item android:id="@+id/saldo_factura" android:title="@string/saldo_factura"></item><item android:id="@+id/guardar_factura" android:title="@string/menu_guardar"></item>
+    
+
+</menu>

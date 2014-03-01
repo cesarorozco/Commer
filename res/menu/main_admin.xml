@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_clientes"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_clientes"/>
+    <item android:id="@+id/menu_facturas" android:title="@string/menu_facturas"></item>
+    <item android:id="@+id/menu_gastos" android:title="@string/menu_gastos"></item>
+    <item android:id="@+id/menu_resumen" android:title="@string/menu_resumen"></item>
+    <item android:id="@+id/menu_usuarios" android:title="@string/menu_usuarios"></item>
+    <item android:id="@+id/menu_errores" android:title="@string/menu_errores"></item>
+    <item android:id="@+id/menu_conf" android:title="@string/menu_configuraciones"></item>
+    <item android:id="@+id/menu_exportar" android:title="@string/exportar"></item>
+    <item android:id="@+id/menu_importar" android:title="@string/importar"></item>
+    <item android:id="@+id/menu_revisiones" android:title="@string/revisiones"></item>
+    <item android:id="@+id/menu_canceladas" android:title="@string/menu_canceladas"></item>
+    <item android:id="@+id/menu_estado" android:title="@string/estado"></item>
+
+</menu>

@@ -1,0 +1,7 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/nueva_fact" android:title="@string/menu_nuevo"></item>
+    <item android:id="@+id/menu_buscar" android:title="@string/buscar"></item>
+    <item android:id="@+id/menu_refrescar" android:title="@string/menu_refrescar_facturas"></item>
+    
+
+</menu>

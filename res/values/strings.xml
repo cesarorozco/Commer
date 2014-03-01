@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">COMMER</string>
+    <string name="action_settings">CONFIGURACION</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="my_location">MI LOCALIZACION</string>
+    <string name="title_activity_main">MENU PRINCIPAL</string>
+    <string name="title_activity_clientes">CLIENTES</string>
+    <string name="title_activity_main_acftivity">MainAcftivity</string>
+    <string name="title_activity_detalle">DETALLE</string>
+    <string name="title_activity_adapter_detalle">AdapterDetalle</string>
+    <string name="fecha">FECHA</string>
+    <string name="text_fecha_inicial_factura">FECHA</string>
+    <string name="text_fecha_final_factura">VENCE</string>
+    <string name="text_proximo_pago_factura">PROXIMO</string>
+    <string name="text_monto_factura">MONTO</string>
+    <string name="text_total_factura">TOTAL</string>
+    <string name="text_cuota_factura">CUOTA</string>
+    <string name="text_interes_factura">INTERES</string>
+    <string name="text_forma_pago_factura">FORMA PAGO</string>
+    <string name="text_cliente_factura">CLIENTE</string>
+    <string name="title_activity_cliente">CLIENTE</string>
+    <string name="title_activity_factura">FACTURA</string>
+    <string name="menu_factura_pagos">PAGOS</string>
+    <string name="title_activity_pagos">PAGOS</string>
+    <string name="menu_pagos_add">NUEVO</string>
+    <string name="title_activity_pago">PAGO</string>
+    <string name="text_valor_pago">VALOR</string>
+    <string name="text_fecha_pago">FECHA</string>
+    <string name="menu_save_pago">GUARDAR</string>
+    <string name="borrar">BORRAR</string>
+    <string name="menu_cliente_add"></string>
+    <string name="borrar_cliente">ELIMINAR</string>
+    <string name="menu_nuevo">NUEVO</string>
+    <string name="menu_borrar">BORRAR</string>
+    <string name="menu_guardar">GUARDAR</string>
+    <string name="menu_mover">MOVER</string>
+    <string name="menu_pagos">PAGOS</string>
+    <string name="menu_registrar_posicion">VER MAPA</string>
+    <string name="title_activity_gastos">GASTOS</string>
+    <string name="title_activity_gasto">GASTO</string>
+    <string name="title_activity_resumen">RESUMEN</string>
+    <string name="title_activity_usuario">USUARIO</string>
+    <string name="title_activity_error">ERROR</string>
+    <string name="title_activity_login">INGRESO</string>
+    <string name="title_activity_configuracion">CONFIGURACION</string>
+    <string name="title_activity_facturas">FACTURAS</string>
+
+    <string-array name="dias_semana">
+        <item>DOMINGO</item>
+        <item>LUNES</item>
+        <item>MARTES</item>
+        <item>MIERCOLES</item>
+        <item>JUEVES</item>
+        <item>VIERNES</item>
+        <item>SABADO</item>
+    </string-array>
+    <string-array name="formas_pago">
+        <item>DIARIO</item>
+        <item>DIA POR MEDIO</item>
+        <item>DOS VECES POR SEMANA</item>
+        <item>SEMANAL</item>
+        <item>QUINCENAL</item>
+        <item>MENSUAL</item>
+    </string-array>
+    <string-array name="rolls">
+        <item>ADMINISTRADOR</item>
+        <item>COBRADOR</item>
+        <item>SUPERVISOR</item>
+    </string-array>
+
+    <string name="mover">MOVER</string>
+    <string name="soltar">SOLTAR</string>
+    <string name="exportar">EXPORTAR</string>
+    <string name="importar">IMPORTAR</string>
+    <string name="aplicacion">CommerApp V 1.0</string>
+    <string name="pegar">PEGAR</string>
+    <string name="title_activity_revisiones">REVISIONES</string>
+    <string name="title_activity_revision">REVISION</string>
+    <string name="revision">REVISION</string>
+    <string name="generar">GENERAR REVISIONES</string>
+    <string name="revisiones">REVISIONES</string>
+    <string name="text_cedula_cliente">CEDULA</string>
+    <string name="text_nombres_cliente">NOMBRES</string>
+    <string name="text_apellidos_cliente">APELLIDOS</string>
+    <string name="text_direccion_cliente">DIRECCION</string>
+    <string name="text_telefono_cliente">TELEFONO</string>
+    <string name="text_celular_cliente">CELULAR</string>
+    <string name="text_fecha_configuracion">FECHA OPERACION</string>
+    <string name="text_dias_configuracion">DIAS RECAUDO</string>
+    <string name="text_iva_configuracion">IVA</string>
+    <string name="text_forma_configuracion">FORMA PAGO</string>
+    <string name="text_plazo_configuracion">PLAZO</string>
+    <string name="text_fecha_error">FECHA</string>
+    <string name="text_base_error">BASE</string>
+    <string name="text_recaudo_error">RECAUDO</string>
+    <string name="text_ventas_error">VENTAS</string>
+    <string name="text_gastos_error">GASTOS</string>
+    <string name="text_error_error">ERROR</string>
+    <string name="text_efectivo_error">EFECTIVO</string>
+    <string name="text_fecha_gasto">FECHA</string>
+    <string name="text_valor_gasto">VALOR</string>
+    <string name="text_detalle_gasto">DETALLE</string>
+    <string name="text_usuario_usuario">USUARIO</string>
+    <string name="text_contrase_usuario">CONTRASEÑA</string>
+    <string name="text_roll_usuario">ROLL</string>
+    <string name="menu_clientes">CLIENTES</string>
+    <string name="menu_facturas">FACTURAS</string>
+    <string name="menu_gastos">GASTOS</string>
+    <string name="menu_resumen">RESUMEN</string>
+    <string name="menu_usuarios">USUARIOS</string>
+    <string name="menu_errores">ERRORES</string>
+    <string name="menu_configuraciones">CONFIGURACIONES</string>
+    <string name="menu_refrescar_facturas">REFRESCAR</string>
+    <string name="menu_activar">ACTIVAR</string>
+    <string name="menu_canceladas">CANCELADAS</string>
+    <string name="saldo_factura">SALDO</string>
+    <string name="buscar">BUSCAR</string>
+    <string name="estado">ESTADO</string>
+
+</resources>

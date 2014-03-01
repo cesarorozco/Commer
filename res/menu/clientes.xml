@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/nuevo_cliente"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_nuevo"/>
+    <item android:id="@+id/menu_buscar" android:title="@string/buscar"></item>
+
+</menu>

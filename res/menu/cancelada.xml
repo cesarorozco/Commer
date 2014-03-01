@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/ver_pagos"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_pagos"/>
+    <item android:id="@+id/activar_factura" android:title="@string/menu_activar"></item>
+
+</menu>

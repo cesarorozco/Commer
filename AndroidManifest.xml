@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cesar.uninorteposition"
+    android:versionCode="4"
+    android:versionName="2.5.0" >
+
+    <!-- Copied from Google Maps Library/AndroidManifest.xml. -->
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!-- External storage for caching. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- My Location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Maps API needs OpenGL ES 2.0. -->
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+    <!-- End of copy. -->
+    <application
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/logonofondo"
+        android:label="@string/app_name" >
+
+        <!--
+         ** You need to replace the key below with your own key. **
+         The example key below will not be accepted because it is not linked to the
+         certificate which you will use to sign this application.
+         See: https://developers.google.com/maps/documentation/android/start
+         for instructions on how to get your own key.
+        -->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCjH1NJC2GZhEjxxiR27n_T5UoRx_h1pO8" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.cesar.uninorteposition.Map"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@android:style/Theme.Dialog" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.FacturasActivity"
+            android:label="@string/title_activity_facturas" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.ClientesActivity"
+            android:label="@string/title_activity_clientes" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.ClienteActivity"
+            android:label="@string/title_activity_cliente" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.FacturaActivity"
+            android:label="@string/title_activity_factura" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.PagosActivity"
+            android:label="@string/title_activity_pagos" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.PagoActivity"
+            android:label="@string/title_activity_pago" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.GastosActivity"
+            android:label="@string/title_activity_gastos" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.GastoActivity"
+            android:label="@string/title_activity_gasto" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.UsuarioActivity"
+            android:label="@string/title_activity_usuario" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.UsuariosActivity"
+            android:label="@string/title_activity_usuario" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.ErroresActivity"
+            android:label="@string/title_activity_error" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.ErrorActivity"
+            android:label="@string/title_activity_error" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.ConfiguracionActivity"
+            android:label="@string/title_activity_configuracion" >
+        </activity>
+        <activity
+            android:name="com.cesar.uninorteposition.RevisionesActivity"
+            android:label="@string/title_activity_revisiones" 
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        </application>
+
+</manifest>

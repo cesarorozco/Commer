@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/borrar_error" android:title="@string/menu_borrar"></item>
+    <item android:id="@+id/nuevo_error" android:title="@string/menu_nuevo"></item>
+
+</menu>

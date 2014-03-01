@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menu_clientes"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_clientes"/>
+    <item android:id="@+id/menu_facturas" android:title="@string/menu_facturas"></item>
+    <item android:id="@+id/menu_gastos" android:title="@string/menu_gastos"></item>
+    <item android:id="@+id/menu_resumen" android:title="@string/menu_resumen"></item>
+    <item android:id="@+id/menu_errores" android:title="@string/menu_errores"></item>
+    <item android:id="@+id/export_db" android:title="@string/exportar"></item>
+    <item android:id="@+id/import_db" android:title="@string/importar"></item>
+
+</menu>

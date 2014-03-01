@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/nueva_factura" android:title="@string/menu_nuevo"></item>
+    <item android:id="@+id/borrar_factura" android:title="@string/menu_borrar"></item>
+    <item android:id="@+id/soltar_factura" android:title="@string/soltar"></item>
+
+</menu>
