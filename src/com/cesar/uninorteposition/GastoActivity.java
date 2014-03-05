@@ -24,7 +24,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.cesar.aplicativo.NumberTextWatcher;
+import com.cesar.bean.Configuracion;
 import com.cesar.bean.Gasto;
+import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
 import com.cesar.uninorteposition.PagoActivity.DatePickerFragment;
 import com.j256.ormlite.dao.Dao;
@@ -39,6 +41,8 @@ public class GastoActivity extends FragmentActivity {
 	SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
 	private DecimalFormat df = new DecimalFormat("#,###.##");
 	private DatabaseHelper databaseHelper = null;
+	private Configuracion c;
+	private Usuario u;
 	
 
 	@Override
@@ -47,6 +51,8 @@ public class GastoActivity extends FragmentActivity {
 		setContentView(R.layout.activity_gasto);
 		gasto = (Gasto)getIntent().getParcelableExtra("gasto");
 		f = getIntent().getStringExtra("flag");
+		c = (Configuracion)getIntent().getParcelableExtra("configuracion");
+		u = (Usuario)getIntent().getParcelableExtra("usuario");
 		cargarDatos(gasto);
 		cargarListener();
 	}
@@ -63,6 +69,23 @@ public class GastoActivity extends FragmentActivity {
 		valor.setText(DecimalFormat.getInstance().format(gasto.getValor()));
 		detalle.setText(gasto.getDetalle());
 		fecha.setText(sd.format(gasto.getFecha()));
+		if (u.getRoll().equalsIgnoreCase("COBRADOR")){
+		    if(!sd.format(gasto.getFecha()).equalsIgnoreCase(sd.format(c.getFecha()))){
+		    	fecha.setEnabled(false);
+				valor.setEnabled(false);	
+				detalle.setEnabled(false);
+		    }else{
+		    	valor.setEnabled(true);
+		    	fecha.setEnabled(false);
+		    }	
+		}else{
+			if(u.getRoll().equalsIgnoreCase("SUPERVISOR")){
+				fecha.setEnabled(false);
+				valor.setEnabled(false);
+				detalle.setEnabled(false);
+			}
+			
+		}
 	}
 
 	@Override

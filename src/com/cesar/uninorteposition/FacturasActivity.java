@@ -1,6 +1,7 @@
 package com.cesar.uninorteposition;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +43,7 @@ import com.cesar.bean.Cliente;
 import com.cesar.bean.Configuracion;
 import com.cesar.bean.Error;
 import com.cesar.bean.Factura;
+import com.cesar.bean.Pago;
 import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
 
@@ -77,6 +79,8 @@ public class FacturasActivity extends ListActivity{
 	public List<Factura> listaFacturasFilter;
 	public List<Cliente> listaClientes;
 	public AdapterFacturaSimple adapterFactura;
+	SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+	private TareaActualizarNext tarea3;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +88,7 @@ public class FacturasActivity extends ListActivity{
 		u = (Usuario)getIntent().getParcelableExtra("usuario");
 		e = getIntent().getStringExtra("estado");
 		c = (Configuracion)getIntent().getParcelableExtra("configuracion");
-		listarFacturas();
+		listarFacturas(0);
 		registerForContextMenu(this.getListView());
 		bits = getResources().getStringArray(R.array.formas_pago);
 		state = this.getListView().onSaveInstanceState();
@@ -114,7 +118,7 @@ public class FacturasActivity extends ListActivity{
                 	facturaSeleccionada.setFechaVencimiento(cal.getTime());
                 	facturaSeleccionada.setInteres(c.getIva());
                 	facturaSeleccionada.setFormaPago(bits[c.getFormaPago()]);
-                	facturaSeleccionada.setNext(calcularNext(facturaSeleccionada));
+                	facturaSeleccionada.setNext(calcularNext(facturaSeleccionada.getFecha(),facturaSeleccionada.getFormaPago()));
                 	facturaSeleccionada.setEstado("activa");
                 	if(listaFacturas!=null)
                 		facturaSeleccionada.setIndice(listaFacturas.size());
@@ -123,15 +127,28 @@ public class FacturasActivity extends ListActivity{
                 	verFactura(facturaSeleccionada,"crear");
                     break;
                 case R.id.menu_refrescar:
-                	listarFacturas();
+                	state = this.getListView().onSaveInstanceState();
+                	listarFacturas(1);
                 	break;
                 case R.id.menu_buscar:
                 	buscarFacturas();
                 	break;
+                
                 }
         return super.onOptionsItemSelected(item);
     }
 	
+	private void actualizarNext() {
+		pDialog = new ProgressDialog(FacturasActivity.this);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Actualizando next...");
+        pDialog.setCancelable(true);
+        pDialog.setMax(100);
+        tarea3 = new TareaActualizarNext();
+        tarea3.execute();
+		
+	}
+
 	private void buscarFacturas() {
 		pDialog = new ProgressDialog(FacturasActivity.this);
         pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -219,20 +236,20 @@ public class FacturasActivity extends ListActivity{
         }
     }
 
-	private Date calcularNext(Factura f) {
+	private Date calcularNext(Date d, String fp) {
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(c.getFecha());
-		if(f.getFormaPago().equalsIgnoreCase("DIARIO"))
+		cal.setTime(d);
+		if(fp.equalsIgnoreCase("DIARIO"))
     	  cal.add(Calendar.DATE, 1);
-		if(f.getFormaPago().equalsIgnoreCase("DIA POR MEDIO"))
+		if(fp.equalsIgnoreCase("DIA POR MEDIO"))
 	    	  cal.add(Calendar.DATE, 2);
-		if(f.getFormaPago().equalsIgnoreCase("DOS VECES POR SEMANA"))
+		if(fp.equalsIgnoreCase("DOS VECES POR SEMANA"))
 	    	  cal.add(Calendar.DATE, 3);
-		if(f.getFormaPago().equalsIgnoreCase("SEMANAL"))
+		if(fp.equalsIgnoreCase("SEMANAL"))
 	    	  cal.add(Calendar.DATE, 7);
-		if(f.getFormaPago().equalsIgnoreCase("QUINCENAL"))
+		if(fp.equalsIgnoreCase("QUINCENAL"))
 	    	  cal.add(Calendar.DATE, 15);
-		if(f.getFormaPago().equalsIgnoreCase("MENSUAL"))
+		if(fp.equalsIgnoreCase("MENSUAL"))
 	    	  cal.add(Calendar.DATE, 30);
 		
 		for(int u=0 ; u<7; u++)
@@ -245,7 +262,7 @@ public class FacturasActivity extends ListActivity{
 		return cal.getTime();
 	}
 
-	private void listarFacturas() {
+	private void listarFacturas(int i) {
 		
 		pDialog = new ProgressDialog(FacturasActivity.this);
         pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -254,6 +271,7 @@ public class FacturasActivity extends ListActivity{
         pDialog.setMax(100);
  
         tarea = new TareaListarFacturas();
+        tarea.setModo(i);
         tarea.execute();
         		
 	}
@@ -290,7 +308,7 @@ public class FacturasActivity extends ListActivity{
 	  }else
 		getMenuInflater().inflate(R.menu.menu_context_factura, menu);
 	
-	  menu.setHeaderTitle("Menu");
+	  menu.setHeaderTitle("MENU");
 	  
 	}
 	
@@ -301,18 +319,28 @@ public class FacturasActivity extends ListActivity{
 		int itemId = item.getItemId();
         switch (itemId) {
                 case R.id.nueva_factura:
+                	state = this.getListView().onSaveInstanceState();
                 	facturaSeleccionada = listaFacturas.get(info.position).clonar();
                 	facturaSeleccionada.setIndice(info.position+1);
                 	nuevaFactura();
                    	break;
                 case R.id.borrar_factura:
                 	state = this.getListView().onSaveInstanceState();
-                	facturaSeleccionada = listaFacturas.get(info.position);
-                	if(facturaSeleccionada.getPagos().isEmpty())
-                		mostrarMensajeEliminar();
-                	else
-                		mostrarMensajeNoEliminar();
-                    break;
+    				facturaSeleccionada = listaFacturas.get(info.position);
+                	if(u.getRoll().equalsIgnoreCase("COBRADOR")&&
+                      (!sd.format(facturaSeleccionada.getFecha())
+                       .equalsIgnoreCase(sd.format(c.getFecha())))){
+                     	mostrarMensajeError();
+                 	}else
+                 		if(u.getRoll().equalsIgnoreCase("SUPERVISOR")){
+                 		   mostrarMensajeError();
+                 		 }else{
+                 			if (facturaSeleccionada.getPagos().isEmpty())
+            					mostrarMensajeEliminar();
+            				else
+            					mostrarMensajeNoEliminar();
+                 		 }
+                	break;
                 case R.id.mover_factura:
                 	state = this.getListView().onSaveInstanceState();
                 	verDialog();
@@ -328,6 +356,22 @@ public class FacturasActivity extends ListActivity{
         return super.onOptionsItemSelected(item);
     }
 	
+	private void mostrarMensajeError() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("SIN PERMISO");
+		builder.setMessage("IMPOSIBLE ELIMINAR");
+		builder.setPositiveButton("ACEPTAR",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						
+						
+					}
+				});
+		// Create the AlertDialog
+		builder.create().show();
+		
+	}
+	
 	private void nuevaFactura() {
 		state = this.getListView().onSaveInstanceState();
        	Calendar cal = Calendar.getInstance();
@@ -335,7 +379,7 @@ public class FacturasActivity extends ListActivity{
     	cal.setTime(facturaSeleccionada.getFecha());
     	cal.add(Calendar.DATE, c.getPlazo());
     	facturaSeleccionada.setFechaVencimiento(cal.getTime());
-    	facturaSeleccionada.setNext(calcularNext(facturaSeleccionada));
+    	facturaSeleccionada.setNext(calcularNext(facturaSeleccionada.getFecha(),facturaSeleccionada.getFormaPago()));
        	facturaSeleccionada.setEstado("activa");
        	verFactura(facturaSeleccionada,"crear");
 		
@@ -463,7 +507,7 @@ public class FacturasActivity extends ListActivity{
 		try {
 			facturaDao = getHelper().getFacturaDao();
 			facturaDao.delete(facturaSeleccionada);
-			listarFacturas();
+			listarFacturas(0);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -478,7 +522,7 @@ public class FacturasActivity extends ListActivity{
         	if (posicion!=-1){
         		actualizarposiciones(posicion+1);
         	}else
-        		listarFacturas();
+        		listarFacturas(0);
         }else{
            	if((requestCode == request_code) && (resultCode == 2))
         		nuevaFactura();
@@ -500,7 +544,10 @@ public class FacturasActivity extends ListActivity{
 		
 	private class TareaListarFacturas extends AsyncTask<Void, Integer, Boolean> {
 		 
-        @Override
+        
+		private int modo;
+
+		@Override
         protected Boolean doInBackground(Void... params) {
  
         	try { 
@@ -517,7 +564,11 @@ public class FacturasActivity extends ListActivity{
             return true;
         }
  
-       	@Override
+       	public void setModo(int i) {
+			modo=i;
+		}
+
+		@Override
         protected void onProgressUpdate(Integer... values) {
             int progreso = values[0].intValue();
             pDialog.setProgress(progreso);
@@ -536,7 +587,11 @@ public class FacturasActivity extends ListActivity{
             	setListAdapter(adapter);
             	if(state!=null)
            		   getListView().onRestoreInstanceState(state);
+            		
                 pDialog.dismiss();
+                if(modo==1){
+                   actualizarNext();
+                }  
             }
         }
  
@@ -591,7 +646,78 @@ public class FacturasActivity extends ListActivity{
             if(result)
             {
               pDialog.dismiss();
-              listarFacturas();
+              listarFacturas(0);
+            }
+        }
+ 
+        @Override
+        protected void onCancelled() {
+            Toast.makeText(FacturasActivity.this, "Tarea cancelada!",
+                Toast.LENGTH_SHORT).show();
+        }
+    }
+	
+	public class TareaActualizarNext extends AsyncTask<Void, Integer, Boolean> {
+		 
+        private int inicio = 0;
+		private Factura fac;
+        
+        public void setInicio(int i){
+        	inicio = i;
+        }
+
+		@Override
+        protected Boolean doInBackground(Void... params) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(c.getFecha());
+			Calendar cal2 = Calendar.getInstance();
+			Calendar cal3 = Calendar.getInstance();
+			Dao<Factura, Integer> facturaDao;
+    		try {
+    			facturaDao = getHelper().getFacturaDao();
+    			for(int i=inicio;i<listaFacturas.size();i++){
+    				fac = listaFacturas.get(i);
+    				cal3.setTime(fac.getNext());
+    				if (cal3.before(cal)) {
+						cal2.setTime(calcularNext(lastPago(fac),
+								fac.getFormaPago()));
+						if (cal2.before(cal) || cal2.equals(cal))
+							fac.setNext(c.getFecha());
+						else
+							fac.setNext(cal2.getTime());
+					
+						facturaDao.update(fac);
+    				}
+					
+    			}	
+    			
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		};
+ 
+            return true;
+        }
+ 
+       	@Override
+        protected void onProgressUpdate(Integer... values) {
+            int progreso = values[0].intValue();
+            pDialog.setProgress(progreso);
+        }
+ 
+        @Override
+        protected void onPreExecute() {
+            pDialog.setProgress(0);
+            pDialog.show();
+        }
+ 
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result)
+            {
+              pDialog.dismiss();
+              state = getListView().onSaveInstanceState();
+              listarFacturas(0);
             }
         }
  
@@ -605,6 +731,48 @@ public class FacturasActivity extends ListActivity{
 	public Context getContext(){
 		return this.getApplication();
 		
+	}
+
+	public Date lastPago(Factura fac) {
+		Date last = fac.getFecha();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(last);
+		Calendar cal2 = Calendar.getInstance();
+		
+		for(Pago p:fac.getPagos()){
+			cal2.setTime(p.getFecha());
+		    if(cal2.before(cal)){
+		    	last = cal2.getTime();
+		    	cal.setTime(last);
+		    }	
+		}	
+		return last;
+	}
+
+	public Date proximoDia() {
+		Date fecha = null;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(c.getFecha());
+		for(int u=0 ; u<7; u++)
+			if(c.getDias().charAt(u)=='1')	
+			   if(cal.get(Calendar.DAY_OF_WEEK)==u+1){
+				   fecha=cal.getTime(); 
+				   break;	
+			   }else
+				   cal.add(Calendar.DATE, 1);
+		
+		return fecha;
+	}
+
+	public boolean existePago(Factura fac, Date fecha) {
+		boolean respuesta = false;
+		for(Pago p:fac.getPagos()){
+			if(sd.format(p.getFecha()).equalsIgnoreCase(sd.format(c.getFecha()))){
+			  respuesta = true;
+			  break;
+			}
+		}	
+		return respuesta;
 	}
 	
 }

@@ -106,7 +106,7 @@ public class UsuarioActivity extends Activity {
 	
 	public void roll(View v){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Formas de pago");
+        builder.setTitle("ROLLES");
         builder.setItems(R.array.rolls, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                u.setRoll(bits[item]);

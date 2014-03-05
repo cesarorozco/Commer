@@ -9,16 +9,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textViewCliente"
+        android:layout_below="@+id/textViewError"
         android:layout_marginLeft="16dp"
         android:src="@drawable/ic_social_person" />
 
     <TextView
-        android:id="@+id/textTelefono"
+        android:id="@+id/textViewUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/imageView1"
-        android:layout_alignLeft="@+id/textViewCliente"
+        android:layout_alignLeft="@+id/textViewError"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -26,12 +26,12 @@
         android:id="@+id/textDireccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textTelefono"
-        android:layout_alignLeft="@+id/textTelefono"
+        android:layout_above="@+id/textViewUsuario"
+        android:layout_alignLeft="@+id/textViewUsuario"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textViewCliente"
+        android:id="@+id/textViewError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

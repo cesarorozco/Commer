@@ -2,6 +2,7 @@ package com.cesar.uninorteposition;
 
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import com.cesar.bean.Configuracion;
 import com.cesar.bean.Factura;
 import com.cesar.bean.Pago;
 import com.cesar.bean.Revision;
+import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
 
@@ -38,6 +40,8 @@ public class PagosActivity extends ListActivity {
 	private int request_code = 1;
 	private Pago pagoSeleccionado;
 	private Configuracion c;
+	private Usuario u;
+	SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
 
 
 	@Override
@@ -45,6 +49,7 @@ public class PagosActivity extends ListActivity {
 		super.onCreate(savedInstanceState);
 		f = (Factura)getIntent().getParcelableExtra("factura");
 		c = (Configuracion)getIntent().getParcelableExtra("configuracion");
+		u = (Usuario)getIntent().getParcelableExtra("usuario");
 		setListAdapter(listarPagos());
 		registerForContextMenu(this.getListView());
 	
@@ -99,6 +104,8 @@ public class PagosActivity extends ListActivity {
 		Intent i = new Intent(this, PagoActivity.class );
 		i.putExtra("pago", p);
 		i.putExtra("flag", f);
+		i.putExtra("configuracion", c);
+		i.putExtra("usuario", this.u);
 		startActivityForResult(i, request_code);
 	}
 	
@@ -172,19 +179,43 @@ public class PagosActivity extends ListActivity {
                 case R.id.nuevo_pago:
                 	Pago pago = new Pago();
                 	pago.setFactura(f);
-                	pago.setFecha(new Date());
+                	pago.setFecha(this.c.getFecha());
                 	pago.setValor(f.getCuota());
                 	verPago(pago,"crear");
                 	break;
                 case R.id.borrar_pago:
                 	pagoSeleccionado = listaPagos.get(info.position);
-                	mostrarMensajeEliminar();
+                	if(u.getRoll().equalsIgnoreCase("COBRADOR")&&
+                	   (!sd.format(pagoSeleccionado.getFecha())
+                	   .equalsIgnoreCase(sd.format(c.getFecha())))){
+                		mostrarMensajeError();
+            		}else
+            			if(u.getRoll().equalsIgnoreCase("SUPERVISOR")){
+            				mostrarMensajeError();
+            		    }else
+            			   mostrarMensajeEliminar();
                     break;
 
                 }
         return super.onOptionsItemSelected(item);
     }
 	
+	private void mostrarMensajeError() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("SIN PERMISO");
+		builder.setMessage("IMPOSIBLE ELIMINAR");
+		builder.setPositiveButton("ACEPTAR",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						
+						
+					}
+				});
+		// Create the AlertDialog
+		builder.create().show();
+		
+	}
+
 	private void mostrarMensajeEliminar() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle("ELIMINAR");

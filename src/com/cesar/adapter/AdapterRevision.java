@@ -66,7 +66,7 @@ public class AdapterRevision extends ArrayAdapter<Revision> {
 
 		// Recogemos el TextView para mostrar el nombre y establecemos el
 		// nombre.
-		TextView nombre = (TextView) item.findViewById(R.id.textViewCliente);
+		TextView nombre = (TextView) item.findViewById(R.id.textViewError);
 		nombre.setText(datos.get(position).getFactura().getCliente().getNombres()+" "+datos.get(position).getFactura().getCliente().getApellidos());
 
 		// Recogemos el TextView para mostrar el número de celda y lo
@@ -74,10 +74,10 @@ public class AdapterRevision extends ArrayAdapter<Revision> {
 		TextView numCelda = (TextView) item.findViewById(R.id.textDireccion);
 		numCelda.setText(datos.get(position).getFactura().getCliente().getDireccion());
 		
-		TextView saldo = (TextView) item.findViewById(R.id.textTelefono);
+		TextView saldo = (TextView) item.findViewById(R.id.textViewUsuario);
 		saldo.setText(DecimalFormat.getInstance().format(datos.get(position).getFactura().getTotal())+" "+DecimalFormat.getInstance().format(calcularSaldo(datos.get(position).getFactura())));
 		
-		TextView fecha = (TextView) item.findViewById(R.id.textViewFecha2);
+		TextView fecha = (TextView) item.findViewById(R.id.textViewFecha);
 		fecha.setText(sd.format(datos.get(position).getFecha()));
 		
 		TextView next = (TextView) item.findViewById(R.id.revision_fecha);

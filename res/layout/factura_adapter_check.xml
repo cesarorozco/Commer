@@ -8,12 +8,12 @@
         android:id="@+id/textDireccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textTelefono"
-        android:layout_below="@+id/textViewCliente"
+        android:layout_alignLeft="@+id/textViewUsuario"
+        android:layout_below="@+id/textViewError"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textViewCliente"
+        android:id="@+id/textViewError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -25,13 +25,13 @@
         android:id="@+id/checkBox1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textTelefono"
+        android:layout_alignBottom="@+id/textViewUsuario"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="16dp"
         android:text=" " />
 
     <TextView
-        android:id="@+id/textViewFecha2"
+        android:id="@+id/textViewFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/checkBox1"
@@ -42,10 +42,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textTelefono"
+        android:id="@+id/textViewUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewCliente"
+        android:layout_alignLeft="@+id/textViewError"
         android:layout_below="@+id/textDireccion"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />

@@ -35,7 +35,7 @@ public class AdapterError extends ArrayAdapter<Error> {
 	 *            Datos que se desean visualizar en el ListView.
 	 */
 	public AdapterError(Context context, List<Error> listaErrores) {
-		super(context, R.layout.pago_lista_layout, listaErrores);
+		super(context, R.layout.error_adapter, listaErrores);
 		// Guardamos los parámetros en variables de clase.
 		this.context = context;
 		this.datos = listaErrores;
@@ -46,18 +46,29 @@ public class AdapterError extends ArrayAdapter<Error> {
 		// En primer lugar "inflamos" una nueva vista, que será la que se
 		// mostrará en la celda del ListView.
 		View item = LayoutInflater.from(context).inflate(
-				R.layout.pago_lista_layout, null);
-
+				R.layout.error_adapter, null);
+		ImageView imagen = (ImageView) item.findViewById(R.id.imageView1);
+		  
+		  
 		
 		// Recogemos el TextView para mostrar el nombre y establecemos el
 		// nombre.
-		TextView valor = (TextView) item.findViewById(R.id.roll);
-		valor.setText(DecimalFormat.getInstance().format(datos.get(position).getError()));
+		TextView error = (TextView) item.findViewById(R.id.textViewError);
+		error.setText(DecimalFormat.getInstance().format(datos.get(position).getError()));
 
 		// Recogemos el TextView para mostrar el número de celda y lo
 		// establecemos.
-		TextView fecha = (TextView) item.findViewById(R.id.textViewDate);
+		TextView fecha = (TextView) item.findViewById(R.id.textViewFecha);
 		fecha.setText(sd.format(datos.get(position).getFecha()));
+		
+		TextView responsable = (TextView) item.findViewById(R.id.textViewUsuario);
+		responsable.setText(datos.get(position).getUsuario().getLogin());
+		
+		if (datos.get(position).getError()<0) {
+			imagen.setImageResource(R.drawable.ic_action_collections_view_as_list_red);
+		}else
+			imagen.setImageResource(R.drawable.ic_action_collections_view_as_list_green);
+
 
 		// Devolvemos la vista para que se muestre en el ListView.
 		return item;

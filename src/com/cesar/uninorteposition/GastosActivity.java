@@ -1,6 +1,7 @@
 package com.cesar.uninorteposition;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class GastosActivity extends ListActivity {
 	private Gasto gastoSeleccionado;
 	private Usuario u;
 	private Configuracion c;
+	SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
 
 
 	@Override
@@ -74,6 +76,8 @@ public class GastosActivity extends ListActivity {
 		Intent i = new Intent(this, GastoActivity.class );
 		i.putExtra("gasto", g);
 		i.putExtra("flag", f);
+		i.putExtra("configuracion", c);
+		i.putExtra("usuario", this.u);
 		startActivityForResult(i, request_code);
 	}
 	
@@ -121,26 +125,52 @@ public class GastosActivity extends ListActivity {
     public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
 		int itemId = item.getItemId();
+		gastoSeleccionado = listaGastos.get(info.position);
         switch (itemId) {
                 case R.id.nuevo_gasto:
                 	Gasto g = new Gasto();
-                	g.setFecha(new Date());
-                	g.setDetalle("");
+                	g.setFecha(c.getFecha());
+                	g.setDetalle(gastoSeleccionado.getDetalle());
+                	g.setValor(gastoSeleccionado.getValor());
                 	verGasto(g,"crear");
                 	break;
                 case R.id.borrar_gasto:
-                	gastoSeleccionado = listaGastos.get(info.position);
-                	mostrarMensajeEliminar();
-                    break;
-
+                	if(u.getRoll().equalsIgnoreCase("COBRADOR")&&
+                            (!sd.format(gastoSeleccionado.getFecha())
+                             .equalsIgnoreCase(sd.format(c.getFecha())))){
+                           	mostrarMensajeError();
+                       	}else
+                       		if(u.getRoll().equalsIgnoreCase("SUPERVISOR")){
+                       		   mostrarMensajeError();
+                       		 }else{
+                       			mostrarMensajeEliminar();
+                  			 }
+                	break;
+                	
                 }
         return super.onOptionsItemSelected(item);
     }
 	
+	private void mostrarMensajeError() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("SIN PERMISO");
+		builder.setMessage("IMPOSIBLE ELIMINAR");
+		builder.setPositiveButton("ACEPTAR",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						
+						
+					}
+				});
+		// Create the AlertDialog
+		builder.create().show();
+		
+	}
+	
 	private void mostrarMensajeEliminar() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Eliminar");
-		builder.setMessage("Esta seguro de eliminar este gasto ?");
+		builder.setTitle("ELIMINAR");
+		builder.setMessage("ESTA SEGURO DE ELIMINAR ESTE GASTO ?");
 		builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	   eliminarGasto();		        		

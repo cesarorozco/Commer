@@ -122,6 +122,7 @@ public class MainActivity extends Activity {
                 case R.id.menu_errores:
                 	 i = new Intent(this, ErroresActivity.class );
                 	 i.putExtra("usuario", this.u);
+                	 i.putExtra("configuracion", this.configuracion);
            		 	 startActivity(i);
                    	 break;
                 case R.id.menu_conf:
@@ -238,6 +239,7 @@ public class MainActivity extends Activity {
 		i.putExtra("error", e);
 		i.putExtra("usuario", this.u);
 		i.putExtra("flag", f);
+		i.putExtra("configuracion", this.configuracion);
 		startActivity(i);
 	}
 	
@@ -494,7 +496,7 @@ public class MainActivity extends Activity {
 			Dao<Error, Integer> simpleDao = getHelper().getErrorDao();
 			try {
 				listaErrores  = simpleDao.queryBuilder().where()
-					.eq("fecha", sd.parse(sd.format(fecha))).query();
+					.eq("fecha", sd.parse(sd.format(fecha))).and().eq(Error.USUARIO_ID, u.getId()).query();
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -16,21 +16,23 @@ import com.cesar.adapter.AdapterError;
 import com.cesar.adapter.AdapterFacturaSimple;
 import com.cesar.adapter.AdapterGastos;
 import com.cesar.adapter.AdapterRecaudo;
+import com.cesar.adapter.AdapterUsuarioList;
 import com.cesar.adapter.AdapterVentas;
 import com.cesar.aplicativo.NumberTextWatcher;
 import com.cesar.bean.Cliente;
+import com.cesar.bean.Configuracion;
 import com.cesar.bean.Error;
 import com.cesar.bean.Factura;
 import com.cesar.bean.Gasto;
 import com.cesar.bean.Pago;
 import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
-import com.cesar.uninorteposition.PagoActivity.DatePickerFragment;
 import com.j256.ormlite.dao.Dao;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -78,9 +80,14 @@ public class ErrorActivity extends FragmentActivity {
 	private TareaListarVentas tarea2;
 	public AdapterGastos adapterGasto;
 	private TareaListarGastos tarea3;
-	private double value = 0;
 	private DecimalFormat df = new DecimalFormat("#,###.##");
-
+	private Configuracion c;
+	public List<Usuario> listaUsuarios;
+	public ArrayList<Usuario> listaUsuarioFilter;
+	public AdapterUsuarioList adapter;
+	public ListView listView;
+	private TareaListarUsuarios tarea4;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -88,6 +95,7 @@ public class ErrorActivity extends FragmentActivity {
 		e = (Error)getIntent().getParcelableExtra("error");
 		u = (Usuario)getIntent().getParcelableExtra("usuario");
 		f = getIntent().getStringExtra("flag");
+		c = (Configuracion)getIntent().getParcelableExtra("configuracion");
 		format.setDecimalSeparatorAlwaysShown(true);
 		cargarDatos(e);
 		
@@ -117,9 +125,8 @@ public class ErrorActivity extends FragmentActivity {
 	private void cargarListener() {
 		efectivo.addTextChangedListener(new NumberTextWatcher(efectivo) );
 		base.addTextChangedListener(new NumberTextWatcher(base));
-				
+		calcularError();		
 	}
-	
 	
 	public void calcularError(){
 		double b;
@@ -158,7 +165,8 @@ public class ErrorActivity extends FragmentActivity {
 		recaudo.setEnabled(false);
 		ventas.setEnabled(false);
 		gastos.setEnabled(false);
-		//efectivo.setEnabled(false);
+		if(!sd.format(e.getFecha()).equalsIgnoreCase(sd.format(c.getFecha())))
+		   efectivo.setEnabled(false);
 		error.setEnabled(false);
 	}
 
@@ -175,11 +183,136 @@ public class ErrorActivity extends FragmentActivity {
 
         switch (itemId) {
                 case R.id.menu_guardar:
-                	guardarError();
+                	if (!e.getUsuario().getRoll().equalsIgnoreCase("Administrador")) {
+                		guardarError();
+                	}else
+                		mostrarMensaje();
+                	break;
+                case R.id.menu_asignar:
+                	listarUsuarios();
                 	break;
                 }
         return super.onOptionsItemSelected(item);
     }
+
+	private void mostrarMensaje() {
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("SIN ASIGNAR");
+		builder.setMessage("DEBE ASIGNAR USUARIO");
+		builder.setPositiveButton("ACEPTAR",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						listarUsuarios();
+						
+					}
+				});
+		// Create the AlertDialog
+		builder.create().show();
+		
+		
+	}
+	
+	protected void listarUsuarios() {
+		pDialog = new ProgressDialog(ErrorActivity.this);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setMessage("Procesando...");
+        pDialog.setCancelable(true);
+        pDialog.setMax(100);
+        tarea4 = new TareaListarUsuarios();
+        tarea4.execute();
+		
+	}
+
+	private class TareaListarUsuarios extends AsyncTask<Void, Integer, Boolean> {
+		
+
+		private EditText edit;
+
+		@Override
+        protected Boolean doInBackground(Void... params) {
+ 
+        	adapter = null;
+        	
+        	
+        	try {
+    			Dao<Usuario, Integer> usuarioDao = getHelper().getUsuarioDao();
+    			listaUsuarios = usuarioDao.queryBuilder().where().eq("roll", "COBRADOR").or().eq("roll", "SUPERVISOR").query();
+    			listaUsuarioFilter = new ArrayList<Usuario>(listaUsuarios);
+       			adapter = new AdapterUsuarioList(getContext(), listaUsuarios);
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+
+ 
+            return true;
+        }
+ 
+       	@Override
+        protected void onProgressUpdate(Integer... values) {
+            int progreso = values[0].intValue();
+            pDialog.setProgress(progreso);
+        }
+ 
+        @Override
+        protected void onPreExecute() {
+            pDialog.setProgress(0);
+            pDialog.show();
+        }
+ 
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result)
+            {
+            	
+            	final Dialog dialog = new Dialog(ErrorActivity.this);
+            	dialog.setContentView(R.layout.activity_detalle);
+            	dialog.setTitle("USUARIO");
+            	listView = (ListView) dialog.findViewById(R.id.listView1);
+            	listView.setAdapter(adapter);
+            	listView.setOnItemClickListener(new OnItemClickListener() {
+                public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+               		modificarUsuario(arg2);
+               		dialog.dismiss();
+				}
+                
+            
+            });
+            	edit = (EditText) dialog.findViewById(R.id.editText1);
+            	edit.addTextChangedListener(new TextWatcher() {
+            	    public void onTextChanged(CharSequence s, int start, int before, int count) {
+            	    	listaUsuarioFilter.clear();
+            	        for(Usuario u : listaUsuarios){
+            	        	if(u.getLogin().toLowerCase().indexOf(String.valueOf(s).toLowerCase())!=-1)
+            	        		listaUsuarioFilter.add(u);
+            	        }	
+            	        adapter = new AdapterUsuarioList(getContext(), listaUsuarioFilter);
+            	        listView.setAdapter(adapter);
+            	    }
+
+            	    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            	    public void afterTextChanged(Editable s) {}
+            	});
+            		
+            dialog.show();
+            	
+            	pDialog.dismiss();
+            }
+        }
+ 
+       
+		protected void onCancelled() {
+            Toast.makeText(ErrorActivity.this, "Tarea cancelada!",
+                Toast.LENGTH_SHORT).show();
+        }
+    }
+	
+	 protected void modificarUsuario(int arg2) {
+			e.setUsuario(listaUsuarioFilter.get(arg2));
+			Toast.makeText(ErrorActivity.this, "Error asignado !",
+	                Toast.LENGTH_SHORT).show();
+	 }
 
 	private void guardarError() {
 		try {
@@ -551,5 +684,4 @@ public class ErrorActivity extends FragmentActivity {
 	}
 	
 	
-
 }

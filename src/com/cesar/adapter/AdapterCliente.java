@@ -48,7 +48,7 @@ public class AdapterCliente extends ArrayAdapter<Cliente>{
 
 		// Recogemos el TextView para mostrar el nombre y establecemos el
 		// nombre.
-		TextView nombre = (TextView) item.findViewById(R.id.textViewCliente);
+		TextView nombre = (TextView) item.findViewById(R.id.textViewError);
 		nombre.setText(datos.get(position).getNombres()+" "+datos.get(position).getApellidos());
 
 		// Recogemos el TextView para mostrar el número de celda y lo
@@ -56,7 +56,7 @@ public class AdapterCliente extends ArrayAdapter<Cliente>{
 		TextView numCelda = (TextView) item.findViewById(R.id.textDireccion);
 		numCelda.setText(datos.get(position).getDireccion());
 		
-		TextView celular = (TextView) item.findViewById(R.id.textTelefono);
+		TextView celular = (TextView) item.findViewById(R.id.textViewUsuario);
 		celular.setText(datos.get(position).getCelular()+" "+datos.get(position).getTelefono());
 
 		// Devolvemos la vista para que se muestre en el ListView.

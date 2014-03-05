@@ -4,13 +4,11 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import com.cesar.adapter.AdapterError;
-import com.cesar.adapter.AdapterFactura;
+import com.cesar.bean.Configuracion;
 import com.cesar.bean.Error;
-import com.cesar.bean.Factura;
 import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.AlertDialog;
@@ -25,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,12 +36,14 @@ public class ErroresActivity extends ListActivity {
 	private ProgressDialog pDialog;
 	private TareaListarErrores tarea;
 	public AdapterError adapter;
+	private Configuracion configuracion;
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		u = (Usuario)getIntent().getParcelableExtra("usuario");
+		configuracion = (Configuracion)getIntent().getParcelableExtra("configuracion");
 		listarErrores();
 		registerForContextMenu(this.getListView());
 	}
@@ -52,8 +51,12 @@ public class ErroresActivity extends ListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.pagos, menu);
-		return true;
+		if (u.getRoll().equalsIgnoreCase("Administrador")) {
+			getMenuInflater().inflate(R.menu.pagos, menu);
+			return true;
+		}else{
+			return false;
+		}	  
 	}
 	
 	private class TareaListarErrores extends AsyncTask<Void, Integer, Boolean> {
@@ -119,6 +122,7 @@ public class ErroresActivity extends ListActivity {
         tarea.execute();
 		
 	}
+	
 	private DatabaseHelper getHelper() {
 		if (databaseHelper == null) {
 			databaseHelper = DatabaseHelper.getHelper(this);
@@ -146,6 +150,7 @@ public class ErroresActivity extends ListActivity {
 		i.putExtra("error", e);
 		i.putExtra("flag", f);
 		i.putExtra("usuario", this.u);
+		i.putExtra("configuracion", this.configuracion);
 		startActivityForResult(i, request_code);
 	}
 	
@@ -165,9 +170,26 @@ public class ErroresActivity extends ListActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
 	  super.onCreateContextMenu(menu, v, menuInfo);
-	  getMenuInflater().inflate(R.menu.menu_context_errores,menu);
-	  menu.setHeaderTitle("Menu");
+	  if (u.getRoll().equalsIgnoreCase("Administrador")) {
+		getMenuInflater().inflate(R.menu.menu_context_errores, menu);
+		menu.setHeaderTitle("Menu");
+	  }else
+		  mostrarMensaje();
 	  
+	}
+	
+	public void mostrarMensaje() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("ERROR");
+		builder.setMessage("FALTAN PERMISOS");
+		builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	    		
+		           }
+		       });
+		//Create the AlertDialog
+		builder.create().show();
+		
 	}
 	
 	@Override
@@ -192,8 +214,8 @@ public class ErroresActivity extends ListActivity {
 	
 	private void mostrarMensajeEliminar() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Eliminar");
-		builder.setMessage("Esta seguro de eliminar este error ?");
+		builder.setTitle("ELIMINAR");
+		builder.setMessage("ESTA SEGURO DE ELIMINAR ESTE ERROR ?");
 		builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
 		           public void onClick(DialogInterface dialog, int id) {
 		        	   eliminarError();		        		

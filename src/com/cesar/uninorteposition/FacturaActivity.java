@@ -123,7 +123,20 @@ public class FacturaActivity extends FragmentActivity {
 		if(f.equalsIgnoreCase("revision"))
 		   deshabilitarCampos();
 		if(e.equalsIgnoreCase("cancelada"))
-			   deshabilitarCampos();
+		   deshabilitarCampos();
+		if(u.getRoll().equalsIgnoreCase("COBRADOR")){
+			deshabilitarCampos();
+			if(sd.format(factura.getFecha()).equalsIgnoreCase(sd.format(c.getFecha()))){
+				cliente.setEnabled(true);
+				vence.setEnabled(true);
+				monto.setEnabled(true);
+				total.setEnabled(true);
+			}
+			next.setEnabled(true);
+			cuota.setEnabled(true);
+			interes.setEnabled(true);
+			formaPago.setEnabled(true);
+		}	
 		
 	}
 
@@ -302,6 +315,7 @@ public class FacturaActivity extends FragmentActivity {
 			Intent i = new Intent(getContext(), PagosActivity.class);
 			i .putExtra("factura", factura);
 			i.putExtra("configuracion", c);
+			i.putExtra("usuario", this.u);
 			startActivityForResult(i, request_code);
 		}
 			
@@ -513,9 +527,6 @@ public class FacturaActivity extends FragmentActivity {
             }
         }
  
-        
-
-		@Override
         protected void onCancelled() {
             Toast.makeText(FacturaActivity.this, "Tarea cancelada!",
                 Toast.LENGTH_SHORT).show();

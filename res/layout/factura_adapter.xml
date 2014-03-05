@@ -15,18 +15,18 @@
         android:src="@drawable/ic_action_collections_view_as_list" />
 
     <TextView
-        android:id="@+id/textViewFecha2"
+        android:id="@+id/textViewFecha"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textTelefono"
-        android:layout_alignBottom="@+id/textTelefono"
+        android:layout_alignBaseline="@+id/textViewUsuario"
+        android:layout_alignBottom="@+id/textViewUsuario"
         android:layout_alignParentRight="true"
         android:layout_marginRight="14dp"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
-        android:id="@+id/textViewCliente"
+        android:id="@+id/textViewError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
@@ -38,15 +38,15 @@
         android:id="@+id/textDireccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textTelefono"
+        android:layout_alignLeft="@+id/textViewUsuario"
         android:layout_alignTop="@+id/imageView1"
         android:text="TextView" />
 
     <TextView
-        android:id="@+id/textTelefono"
+        android:id="@+id/textViewUsuario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textViewCliente"
+        android:layout_alignLeft="@+id/textViewError"
         android:layout_below="@+id/textDireccion"
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />

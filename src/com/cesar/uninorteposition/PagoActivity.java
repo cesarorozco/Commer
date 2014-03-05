@@ -10,8 +10,10 @@ import java.util.Date;
 
 import com.cesar.adapter.AdapterPagoList;
 import com.cesar.aplicativo.NumberTextWatcher;
+import com.cesar.bean.Configuracion;
 import com.cesar.bean.Factura;
 import com.cesar.bean.Pago;
+import com.cesar.bean.Usuario;
 import com.cesar.db.DatabaseHelper;
 import com.cesar.uninorteposition.ConfiguracionActivity.DatePickerFragment;
 import com.j256.ormlite.dao.Dao;
@@ -45,6 +47,8 @@ public class PagoActivity extends FragmentActivity {
 	private String f;
 	SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
 	private DecimalFormat df = new DecimalFormat("#,###.##");
+	private Configuracion c;
+	private Usuario u;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,8 @@ public class PagoActivity extends FragmentActivity {
 		setContentView(R.layout.pago_layout);
 		p = (Pago)getIntent().getParcelableExtra("pago");
 		f = getIntent().getStringExtra("flag");
+		c = (Configuracion)getIntent().getParcelableExtra("configuracion");
+		u = (Usuario)getIntent().getParcelableExtra("usuario");
 		cargarDatos(p);
 		cargarListener();
 	}
@@ -65,8 +71,26 @@ public class PagoActivity extends FragmentActivity {
 		fecha = (TextView) findViewById(R.id.editTextValor);
 		valor = (EditText) findViewById(R.id.editTextDetalle);
 		fecha.setText(sd.format(p2.getFecha()));
-		valor.setText(DecimalFormat.getInstance().format(p2.getValor()));	
+		valor.setText(DecimalFormat.getInstance().format(p2.getValor()));
+		if (u.getRoll().equalsIgnoreCase("COBRADOR")){
+		    if(!sd.format(p.getFecha()).equalsIgnoreCase(sd.format(c.getFecha()))){
+		    	fecha.setEnabled(false);
+				valor.setEnabled(false);	
+		    }else{
+		    	valor.setEnabled(true);
+		    	fecha.setEnabled(false);
+		    }	
+		}else{
+			if(u.getRoll().equalsIgnoreCase("SUPERVISOR")){
+				fecha.setEnabled(false);
+				valor.setEnabled(false);	
+			}
+			
+		}
+         	   			   
 	}
+		
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

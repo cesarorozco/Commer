@@ -32,7 +32,7 @@
         <requestFocus />
 
         <TextView
-            android:id="@+id/textTelefono"
+            android:id="@+id/textViewUsuario"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_fecha_inicial_factura" 

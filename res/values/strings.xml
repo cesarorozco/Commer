@@ -118,5 +118,7 @@
     <string name="saldo_factura">SALDO</string>
     <string name="buscar">BUSCAR</string>
     <string name="estado">ESTADO</string>
+    <string name="asignar">ASIGNAR</string>
+    <string name="actualizar">ACTUALIZAR NEXT</string>
 
 </resources>

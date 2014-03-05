@@ -93,7 +93,7 @@ public class AdapterFactura extends ArrayAdapter<Factura> {
 
 		// Recogemos el TextView para mostrar el nombre y establecemos el
 		// nombre.
-		TextView nombre = (TextView) item.findViewById(R.id.textViewCliente);
+		TextView nombre = (TextView) item.findViewById(R.id.textViewError);
 		nombre.setText(datos.get(position).getCliente().getNombres()+" "+datos.get(position).getCliente().getApellidos());
 
 		// Recogemos el TextView para mostrar el número de celda y lo
@@ -101,10 +101,10 @@ public class AdapterFactura extends ArrayAdapter<Factura> {
 		TextView numCelda = (TextView) item.findViewById(R.id.textDireccion);
 		numCelda.setText(datos.get(position).getCliente().getDireccion());
 		
-		TextView saldo = (TextView) item.findViewById(R.id.textTelefono);
+		TextView saldo = (TextView) item.findViewById(R.id.textViewUsuario);
 		saldo.setText(DecimalFormat.getInstance().format(datos.get(position).getTotal())+" "+DecimalFormat.getInstance().format(calcularSaldo(datos.get(position))));
 		
-		TextView next = (TextView) item.findViewById(R.id.textViewFecha2);
+		TextView next = (TextView) item.findViewById(R.id.textViewFecha);
 		next.setText(sd.format(datos.get(position).getNext()));
 	
 		// Devolvemos la vista para que se muestre en el ListView.
