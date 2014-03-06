@@ -162,9 +162,6 @@ public class ErrorActivity extends FragmentActivity {
 	private void desabilitarText() {
 		fecha.setEnabled(false);
 		base.setEnabled(false);
-		recaudo.setEnabled(false);
-		ventas.setEnabled(false);
-		gastos.setEnabled(false);
 		if(!sd.format(e.getFecha()).equalsIgnoreCase(sd.format(c.getFecha())))
 		   efectivo.setEnabled(false);
 		error.setEnabled(false);
