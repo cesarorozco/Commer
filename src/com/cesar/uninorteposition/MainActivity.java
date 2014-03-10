@@ -129,18 +129,12 @@ public class MainActivity extends Activity {
                 	 i = new Intent(this, ConfiguracionActivity.class );
                 	 startActivityForResult(i, request_code);
                	 	 break; 
-                case R.id.export_db:
-               	 	 exportar();
-               	 	 break; 
-                case R.id.import_db:
-               	 	 importar();
-              	 	 break; 
                 case R.id.menu_exportar:
               	 	 exportar();
               	 	 break; 
                case R.id.menu_importar:
-              	 	 importar();
-             	 	 break; 
+            	     mostrarMensajeImportar();
+              	 	 break; 
                case R.id.menu_revisiones:
             	     i = new Intent(this, RevisionesActivity.class );
             	     i.putExtra("usuario", this.u);
@@ -162,6 +156,25 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 	
+	private void mostrarMensajeImportar() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("PELIGRO");
+		builder.setMessage("LA BASE DE DATOS SERA REEMPLAZADA");
+		builder.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+		           public void onClick(DialogInterface dialog, int id) {
+		        	   importar(); 		
+		           }
+		       });
+		builder.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+	           public void onClick(DialogInterface dialog, int id) {
+	        	  
+	           }
+	       });
+		//Create the AlertDialog
+		builder.create().show();
+		
+	}
+
 	private void calcularEstado() {
 		total = 0;
 		pDialog = new ProgressDialog(MainActivity.this);
@@ -193,13 +206,14 @@ public class MainActivity extends Activity {
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
-                Toast.makeText(getBaseContext(), backupDB.toString(),
+                backupDB.delete();
+                Toast.makeText(getBaseContext(), "ARCHIVO IMPORTADO EXITOSAMENTE",
                         Toast.LENGTH_LONG).show();
 
             }
         } catch (Exception e) {
 
-            Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG)
+            Toast.makeText(getBaseContext(), "ERROR AL IMPORTAR", Toast.LENGTH_LONG)
                     .show();
 
         }		
@@ -222,13 +236,13 @@ public class MainActivity extends Activity {
                  dst.transferFrom(src, 0, src.size());
                  src.close();
                  dst.close();
-                 Toast.makeText(getBaseContext(), backupDB.toString(),
+                 Toast.makeText(getBaseContext(), "ARCHIVO EXPORTADO EXITOSAMENTE",
                          Toast.LENGTH_LONG).show();
 
              }
          } catch (Exception e) {
 
-             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG)
+             Toast.makeText(getBaseContext(), "ERROR AL EXPORTAR", Toast.LENGTH_LONG)
                      .show();
 
          }

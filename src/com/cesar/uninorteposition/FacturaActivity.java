@@ -1,4 +1,4 @@
-package com.cesar.uninorteposition;
+ package com.cesar.uninorteposition;
 
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -490,10 +490,11 @@ public class FacturaActivity extends FragmentActivity {
             	listView.setOnItemClickListener(new OnItemClickListener() {
                 public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 	
-                	if (arg2!=0) {
-						modificarCliente(arg2);
+                	if (listaClientesFilter.get(arg2).getNombres().equalsIgnoreCase("NUEVO CLIENTE")) {
+                		nuevoCliente();
 					}else
-						nuevoCliente();
+						modificarCliente(arg2); 
+						
 					dialog.dismiss();
                 }
                 

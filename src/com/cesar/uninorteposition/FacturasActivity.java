@@ -679,8 +679,7 @@ public class FacturasActivity extends ListActivity{
     				fac = listaFacturas.get(i);
     				cal3.setTime(fac.getNext());
     				if (cal3.before(cal)) {
-						cal2.setTime(calcularNext(lastPago(fac),
-								fac.getFormaPago()));
+						cal2.setTime(calcularNext(lastPago(fac),fac.getFormaPago()));
 						if (cal2.before(cal) || cal2.equals(cal))
 							fac.setNext(c.getFecha());
 						else
@@ -738,10 +737,9 @@ public class FacturasActivity extends ListActivity{
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(last);
 		Calendar cal2 = Calendar.getInstance();
-		
 		for(Pago p:fac.getPagos()){
 			cal2.setTime(p.getFecha());
-		    if(cal2.before(cal)){
+		    if(cal2.after(cal)){
 		    	last = cal2.getTime();
 		    	cal.setTime(last);
 		    }	
